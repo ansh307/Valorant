@@ -5,19 +5,26 @@ import Lenis from "lenis";
 import { useEffect, useRef, useState } from "react";
 
 const images = [
-  "/img/gallery-5.webp",
-  "/img/gallery-5.webp",
-  "/img/gallery-5.webp",
-  "/img/gallery-5.webp",
-  "/img/gallery-5.webp",
-  "/img/gallery-5.webp",
-  "/img/gallery-5.webp",
-  "/img/gallery-5.webp",
-  "/img/gallery-5.webp",
-  "/img/gallery-5.webp",
-  "/img/gallery-5.webp",
-  "/img/gallery-5.webp",
-  "/img/gallery-5.webp",
+  "/img/maps/Ascent.jpg",
+  "/img/maps/Bind.jpg",
+  "/img/maps/Haven.jpg",
+  "/img/maps/Icebox.jpg",
+  "/img/maps/Split.jpg",
+  "/img/skins/Elder.jpg",
+  "/img/skins/Oni.jpg",
+  "/img/skins/Reaver.jpg",
+  "/img/skins/Singularity.jpg",
+  "/img/skins/Prime.jpg",
+  "/img/vtc/VTC-1.webp",
+  "/img/vtc/VTC-2.png",
+  "/img/vtc/VTC-3.jpg",
+  "/img/vtc/VTC-trophy.jpg",
+  "/img/vtc/Stream-1.png",
+  "/img/vtc/Tenz.jpeg",
+  "/img/vtc/VTC-Evil-Genius.jpg",
+  "/img/vtc/VTC-PaperRex.jpg",
+  "/img/vtc/Stream-2.png",
+  "/img/vtc/VTC-4.jpg",
 ];
 
 const ParallexSection = () => {
@@ -68,12 +75,24 @@ const ParallexSection = () => {
 
       <div
         ref={gallery}
-        className="relative box-border flex h-[175vh] gap-[2vw] overflow-hidden bg-valorantbackground p-[2vw]"
+        className="relative box-border flex h-[175vh] gap-[2vw] overflow-hidden bg-black p-[2vw]"
       >
-        <Column images={[images[0], images[1], images[2]]} y={y} />
-        <Column images={[images[3], images[4], images[5]]} y={y2} />
-        <Column images={[images[6], images[7], images[8]]} y={y3} />
-        <Column images={[images[6], images[7], images[8]]} y={y4} />
+        <Column
+          images={[images[0], images[5], images[17], images[12], images[14]]}
+          y={y}
+        />
+        <Column
+          images={[images[15], images[1], images[6], images[10], images[13]]}
+          y={y2}
+        />
+        <Column
+          images={[images[18], images[16], images[2], images[7], images[11]]}
+          y={y3}
+        />
+        <Column
+          images={[images[4], images[19], images[9], images[3], images[8]]}
+          y={y4}
+        />
       </div>
       {/* <div className="font-geist relative flex h-screen items-center justify-center gap-2">
         <div className="absolute left-1/2 top-[10%] grid -translate-x-1/2 content-start justify-items-center gap-6 text-center text-black">

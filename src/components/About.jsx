@@ -1,6 +1,6 @@
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/all";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import AnimatedTitle from "./AnimatedTitle";
 import Animation2Title from "./Animated2Title";
@@ -28,9 +28,19 @@ const About = () => {
   });
 
   return (
-    <div id="about" className="min-h-screen w-screen">
+    <div
+      id="about"
+      className="min-h-screen w-screen"
+      style={{
+        backgroundImage: `url("/img/background/background-2.png")`,
+        backgroundPosition: "center 20%",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "150% auto",
+        backgroundColor: "#ece7e1",
+      }}
+    >
       <div className="relative mb-8 mt-36 flex flex-col items-center gap-5">
-        <p className="font-general text-sm uppercase md:text-[10px]">
+        <p className="font-sans text-sm uppercase md:text-[10px]">
           DEFY THE LIMITS
         </p>
 
@@ -40,10 +50,11 @@ const About = () => {
         />
 
         <div className="about-subtext">
-          <p>The Game of Games begins—your life, now an epic MMORPG</p>
+          <p>FIGHT AROUND THE WORLD</p>
           <p className="text-gray-500">
-            Zentry unites every player from countless games and platforms, both
-            digital and physical, into a unified Play Economy
+            Each map is a playground to showcase your creative thinking.
+            Purpose-built for team strategies, spectacular plays, and clutch
+            moments. Make the play others will imitate for years to come..
           </p>
         </div>
       </div>

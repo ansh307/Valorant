@@ -1,7 +1,6 @@
 "use client";
 
 import { AnimatePresence, motion, useSpring } from "framer-motion";
-// import { Play, Plus } from "lucide-react";
 import { IoMdPlay, IoMdPause } from "react-icons/io";
 import { AiOutlinePlus } from "react-icons/ai";
 import {
@@ -16,10 +15,17 @@ import {
   MediaVolumeRange,
 } from "media-chrome/react";
 import type { ComponentProps } from "react";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { cn } from "../../lib/utils";
 import Animation2Title from "../Animated2Title";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "../ui/carousel";
 
 export type VideoPlayerProps = ComponentProps<typeof MediaController>;
 
@@ -126,11 +132,32 @@ export const VideoPlayerContent = ({
 
 export const PlayerSection = () => {
   const [showVideoPopOver, setShowVideoPopOver] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const [isVisible, setIsVisible] = useState(false); // 👈 track visibility
 
-  const SPRING = {
-    mass: 0.1,
-  };
+  const sectionRef = useRef<HTMLElement | null>(null);
 
+  // detect when section is visible
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true); // section reached
+            observer.disconnect(); // load once, then stop observing
+          }
+        });
+      },
+      { threshold: 0.3 } // section visible by 30%
+    );
+
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const SPRING = { mass: 0.1 };
   const x = useSpring(0, SPRING);
   const y = useSpring(0, SPRING);
   const opacity = useSpring(0, SPRING);
@@ -142,57 +169,149 @@ export const PlayerSection = () => {
     y.set(e.clientY - bounds.top);
   };
 
+  const handleOnClick = (src: string) => {
+    setSelectedVideo(src);
+    setShowVideoPopOver(true);
+  };
+
   return (
-    <section className="relative flex h-screen w-full items-center justify-center bg-valorantbackground">
+    <section
+      ref={sectionRef}
+      className="relative flex h-screen w-full items-center justify-center bg-valorantbackground"
+      style={{
+        backgroundImage: `url("/img/background/background-1.png")`,
+        backgroundPosition: "50% 0px",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundBlendMode: "color-burn",
+      }}
+    >
+      {/* Title */}
       <div className="absolute top-24 grid content-start justify-items-center gap-6 text-center">
         <Animation2Title
           title="Gear Up for the <b>n</b>ew Se<b>a</b>s<b>o</b>n <br />  Are You Ready?"
           containerClass="!text-black text-center"
         />
       </div>
-      <div className="absolute top-3/4 grid content-start justify-items-center gap-6 text-center">
-        <span className="after:to-foreground relative max-w-[12ch] text-xs uppercase leading-tight opacity-40 after:absolute after:left-1/2 after:top-full after:h-16 after:w-px after:bg-gradient-to-b after:from-transparent after:content-['']">
+
+      {/* Subtitle */}
+      <div className="absolute bottom-20 grid content-start justify-items-center gap-6 text-center">
+        <span className="relative max-w-[12ch] text-xs uppercase leading-tight opacity-40 after:absolute after:left-1/2 after:top-full after:h-16 after:w-px after:bg-gradient-to-b after:from-transparent after:content-['']">
           Click the video to play
         </span>
       </div>
+
+      {/* Popover */}
       <AnimatePresence>
-        {showVideoPopOver && (
-          <VideoPopOver setShowVideoPopOver={setShowVideoPopOver} />
+        {showVideoPopOver && selectedVideo && (
+          <VideoPopOver
+            setShowVideoPopOver={setShowVideoPopOver}
+            selectedVideo={selectedVideo}
+          />
         )}
       </AnimatePresence>
-      <div
-        onMouseMove={handlePointerMove}
-        onMouseLeave={() => {
-          opacity.set(0);
+
+      {/* Carousel */}
+      <Carousel
+        opts={{ loop: true }}
+        setApi={(api) => {
+          if (!api) return;
+          setActiveIndex(api.selectedScrollSnap());
+          api.on("select", () => {
+            setActiveIndex(api.selectedScrollSnap());
+          });
         }}
-        onClick={() => setShowVideoPopOver(true)}
-        className="size-45"
+        className="mt-16"
       >
-        <motion.div
-          style={{ x, y, opacity }}
-          className="relative z-20 flex w-fit select-none items-center justify-center gap-2 p-2 text-sm text-white mix-blend-exclusion"
-        >
-          <IoMdPlay className="size-4 fill-white" /> Play
-        </motion.div>
-        <video
-          autoPlay
-          muted
-          playsInline
-          loop
-          className="h-52 w-52 object-cover"
-        >
-          <source src="/videos/hero-1.mp4" />
-        </video>
-      </div>
+        <CarouselContent className="relative w-full h-full">
+          {/* Item 1 */}
+          <CarouselItem>
+            <div
+              onMouseMove={handlePointerMove}
+              onMouseLeave={() => opacity.set(0)}
+              onClick={
+                activeIndex === 0
+                  ? () => handleOnClick("/videos/hero-new-3.mp4")
+                  : undefined
+              }
+              className="w-52 mx-auto"
+            >
+              <motion.div
+                style={{ x, y, opacity }}
+                className="relative z-20 flex w-fit select-none items-center justify-center gap-2 p-2 text-sm text-white mix-blend-exclusion"
+              >
+                <IoMdPlay className="size-4 fill-white" /> Play
+              </motion.div>
+
+              {isVisible ? ( // 👈 only render video once section visible
+                <video
+                  autoPlay
+                  muted
+                  playsInline
+                  loop
+                  className="h-52 w-52 object-cover ml-6"
+                >
+                  <source src="/videos/hero-new-3.mp4" />
+                </video>
+              ) : (
+                <div className="h-52 w-52 bg-gray-900 ml-6 animate-pulse rounded-lg" />
+              )}
+            </div>
+          </CarouselItem>
+
+          {/* Item 2 */}
+          <CarouselItem>
+            <div
+              onMouseMove={handlePointerMove}
+              onMouseLeave={() => opacity.set(0)}
+              onClick={
+                activeIndex === 1
+                  ? () => handleOnClick("/videos/hero-new-2.mp4")
+                  : undefined
+              }
+              className="w-52 mx-auto"
+            >
+              <motion.div
+                style={{ x, y, opacity }}
+                className="relative z-20 flex w-fit select-none items-center justify-center gap-2 p-2 text-sm text-white mix-blend-exclusion"
+              >
+                <IoMdPlay className="size-4 fill-white" /> Play
+              </motion.div>
+
+              {isVisible ? (
+                <video
+                  autoPlay
+                  muted
+                  playsInline
+                  loop
+                  className="h-52 w-52 object-cover ml-6"
+                >
+                  <source src="/videos/hero-new-2.mp4" />
+                </video>
+              ) : (
+                <div className="h-52 w-52 bg-gray-900 ml-6 animate-pulse rounded-lg" />
+              )}
+            </div>
+          </CarouselItem>
+        </CarouselContent>
+
+        {/* Navigation */}
+        <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 border-none" />
+        <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 border-none" />
+      </Carousel>
     </section>
   );
 };
 
+interface VideoPopOverProps {
+  setShowVideoPopOver: (showVideoPopOver: boolean) => void;
+  selectedVideo: string | null;
+}
+
 export const VideoPopOver = ({
   setShowVideoPopOver,
-}: {
-  setShowVideoPopOver: (showVideoPopOver: boolean) => void;
-}) => {
+  selectedVideo,
+}: VideoPopOverProps) => {
   return (
     <div className="fixed left-0 top-0 z-[101] flex h-screen w-screen items-center justify-center">
       <motion.div
@@ -227,7 +346,7 @@ export const VideoPopOver = ({
       >
         <VideoPlayer style={{ width: "100%", height: "100%" }}>
           <VideoPlayerContent
-            src="/videos/hero-1.mp4"
+            src={selectedVideo ? selectedVideo : "/videos/hero-new-1.mp4"}
             autoPlay
             slot="media"
             className="w-full object-cover"
@@ -241,9 +360,9 @@ export const VideoPopOver = ({
             <AiOutlinePlus className="size-5 rotate-45 text-white" />
           </span>
           <VideoPlayerControlBar className="absolute bottom-0 left-1/2 flex w-full max-w-7xl -translate-x-1/2 items-center justify-center px-5 mix-blend-exclusion md:px-10 md:py-5">
-            <VideoPlayerPlayButton className="h-4 bg-transparent" />
-            <VideoPlayerTimeRange className="bg-transparent" />
-            <VideoPlayerMuteButton className="size-4 bg-transparent" />
+            <VideoPlayerPlayButton className="h-4 bg-transparent  " />
+            <VideoPlayerTimeRange className="bg-transparent " />
+            <VideoPlayerMuteButton className="size-4 bg-transparent " />
           </VideoPlayerControlBar>
         </VideoPlayer>
       </motion.div>

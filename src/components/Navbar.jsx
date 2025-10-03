@@ -6,7 +6,15 @@ import { TiLocationArrow } from "react-icons/ti";
 
 import Button from "./Button";
 
-const navItems = ["Nexus", "Vault", "Prologue", "About", "Contact"];
+const navItems = [
+  "Game Info",
+  "Media",
+  "News",
+  "Support",
+  "Our Socials",
+  "Esport",
+  "Champions of Champions",
+];
 
 const NavBar = () => {
   // State for toggling audio and visual indicator
@@ -31,6 +39,7 @@ const NavBar = () => {
   useEffect(() => {
     if (isAudioPlaying) {
       audioElementRef.current.play();
+      audioElementRef.current.volume = 0.2;
     } else {
       audioElementRef.current.pause();
     }
@@ -77,7 +86,7 @@ const NavBar = () => {
               id="product-button"
               title="play now"
               rightIcon={<TiLocationArrow />}
-              containerClass="bg-blue-50 md:flex hidden items-center justify-center gap-2"
+              containerClass="bg-valorantbackground md:flex hidden items-center justify-center gap-2"
             />
           </div>
 
@@ -86,6 +95,7 @@ const NavBar = () => {
             <div className="hidden md:block">
               {navItems.map((item, index) => (
                 <a
+                  aria-label={`go to ${item.toLowerCase()}`}
                   key={index}
                   href={`#${item.toLowerCase()}`}
                   className="nav-hover-btn"
@@ -98,6 +108,7 @@ const NavBar = () => {
             <button
               onClick={toggleAudioIndicator}
               className="ml-10 flex items-center space-x-0.5"
+              aria-label="audio-button"
             >
               <audio
                 ref={audioElementRef}

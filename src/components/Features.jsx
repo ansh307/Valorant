@@ -79,7 +79,7 @@ export const BentoCard = ({ src, title, description, isComingSoon }) => {
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className="border-hsla relative flex w-fit cursor-pointer items-center gap-1 overflow-hidden rounded-full bg-black px-5 py-2 text-xs uppercase text-white/20"
+            className="border-hsla relative flex w-fit cursor-pointer items-center gap-1 overflow-hidden rounded-full bg-black px-5 py-2 text-xs uppercase text-white"
           >
             {/* Radial gradient hover effect */}
             <div
@@ -99,16 +99,16 @@ export const BentoCard = ({ src, title, description, isComingSoon }) => {
 };
 
 const Features = () => (
-  <section className="bg-black pb-52">
+  <section className="bg-black text-blue-50 pb-52">
     <div className="container mx-auto px-3 md:px-10">
       <div className="px-5 py-32">
-        <p className="font-circular-web text-lg text-blue-50">
-          Into the Metagame Layer
+        <p className="font-sans font-medium text-lg text-blue-50">
+          WE ARE VALORANT
         </p>
-        <p className="max-w-md font-circular-web text-lg text-blue-50 opacity-50">
-          Immerse yourself in a rich and ever-expanding universe where a vibrant
-          array of products converge into an interconnected overlay experience
-          on your world.
+        <p className="max-w-md font-sans text-lg text-para-gray">
+          Blend your style and experience on a global, competitive stage. You
+          have 13 rounds to attack and defend your side using sharp gunplay and
+          tactical abilities.
         </p>
       </div>
 
@@ -117,11 +117,11 @@ const Features = () => (
           src="videos/feature-card-1.mp4"
           title={
             <>
-              radia<b>n</b>t
+              <b>F</b>ire Agai<b>n</b>
             </>
           }
-          description="A cross-platform metagame app, turning your activities across Web2 and Web3 games into a rewarding adventure."
-          isComingSoon
+          description="The worlds of agents and pros collide in a race for the Champions trophy. Check out the official anthem and music video for Champions 2022."
+          // isComingSoon
         />
       </BentoTilt>
 
@@ -131,10 +131,10 @@ const Features = () => (
             src="videos/feature-card-2.mp4"
             title={
               <>
-                zig<b>m</b>a
+                De<b>a</b>deye
               </>
             }
-            description="An anime and gaming-inspired NFT collection - the IP primed for expansion."
+            description="Questions answered. Futures revealed. Bienvenue au maître du jeu."
             isComingSoon
           />
         </BentoTilt>
@@ -144,10 +144,10 @@ const Features = () => (
             src="videos/feature-card-3.mp4"
             title={
               <>
-                n<b>e</b>xus
+                Mastermi<b>n</b>d
               </>
             }
-            description="A gamified social hub, adding a new dimension of play to social interaction for Web3 communities."
+            description="Anticipate every move and always be one step ahead of the game."
             isComingSoon
           />
         </BentoTilt>
@@ -157,10 +157,10 @@ const Features = () => (
             src="videos/feature-card-4.mp4"
             title={
               <>
-                az<b>u</b>l
+                <b>D</b>uelist
               </>
             }
-            description="A cross-world AI Agent - elevating your gameplay to be more fun and productive."
+            description="Face danger head-on, thrive in isolation, and turn every fight into your advantage."
             isComingSoon
           />
         </BentoTilt>
@@ -171,7 +171,7 @@ const Features = () => (
               W<b>A</b>tch M<b>o</b>re ....
             </h1>
 
-            <TiLocationArrow className="m-5 scale-[5] self-end" />
+            <TiLocationArrow className="m-5 scale-[5] self-end text-black" />
           </div>
         </BentoTilt>
 

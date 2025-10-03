@@ -4,10 +4,9 @@ import * as React from "react";
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 import { cn } from "../../lib/utils";
-import { Button } from "../../components/ui/button";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -171,19 +170,17 @@ function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-function CarouselPrevious({
-  className,
-  variant = "outline",
-  size = "icon",
-  ...props
-}: React.ComponentProps<typeof Button>) {
+interface CarouselButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  className?: string;
+}
+
+function CarouselPrevious({ className, ...props }: CarouselButtonProps) {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
   return (
-    <Button
+    <button
       data-slot="carousel-previous"
-      variant={variant}
-      size={size}
       className={cn(
         "absolute size-8 rounded-full",
         orientation === "horizontal"
@@ -195,25 +192,18 @@ function CarouselPrevious({
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft />
+      <FiChevronLeft />
       <span className="sr-only">Previous slide</span>
-    </Button>
+    </button>
   );
 }
 
-function CarouselNext({
-  className,
-  variant = "outline",
-  size = "icon",
-  ...props
-}: React.ComponentProps<typeof Button>) {
+function CarouselNext({ className, ...props }: CarouselButtonProps) {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
 
   return (
-    <Button
+    <button
       data-slot="carousel-next"
-      variant={variant}
-      size={size}
       className={cn(
         "absolute size-8 rounded-full",
         orientation === "horizontal"
@@ -225,9 +215,9 @@ function CarouselNext({
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight />
+      <FiChevronRight />
       <span className="sr-only">Next slide</span>
-    </Button>
+    </button>
   );
 }
 

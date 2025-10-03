@@ -5,10 +5,6 @@ export default {
     extend: {
       fontFamily: {
         zentry: ["zentry", "sans-serif"],
-        general: ["general", "sans-serif"],
-        "circular-web": ["circular-web", "sans-serif"],
-        "robert-medium": ["robert-medium", "sans-serif"],
-        "robert-regular": ["robert-regular", "sans-serif"],
       },
       colors: {
         blue: {
@@ -27,6 +23,9 @@ export default {
         },
         valorant: "#ff4655",
         valorantbackground: "#ece7e1",
+        valorantdarkgray: "#111111",
+        valorantlightgray: "#292929",
+        "para-gray": "#707078",
       },
     },
   },
